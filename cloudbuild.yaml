@@ -1,0 +1,53 @@
+# Cloud Build config for deploying to Cloud Run with Docker build args.
+# Invoked by deploy_cloudrun.sh with substitutions for Firebase config.
+#
+# Substitutions (passed by deploy script):
+#   _VITE_FIREBASE_API_KEY, _VITE_FIREBASE_AUTH_DOMAIN, _VITE_FIREBASE_PROJECT_ID
+#   _SERVICE_NAME, _REGION
+#
+# Requires Artifact Registry repo. Create if needed:
+#   gcloud artifacts repositories create cloud-run-source-deploy \
+#     --repository-format=docker --location=REGION
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/${_SERVICE_NAME}:${BUILD_ID}'
+      - '--build-arg'
+      - 'VITE_FIREBASE_API_KEY=${_VITE_FIREBASE_API_KEY}'
+      - '--build-arg'
+      - 'VITE_FIREBASE_AUTH_DOMAIN=${_VITE_FIREBASE_AUTH_DOMAIN}'
+      - '--build-arg'
+      - 'VITE_FIREBASE_PROJECT_ID=${_VITE_FIREBASE_PROJECT_ID}'
+      - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/${_SERVICE_NAME}:${BUILD_ID}'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/${_SERVICE_NAME}:${BUILD_ID}'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'GOOGLE_CLOUD_PROJECT=${PROJECT_ID}'
+
+substitutions:
+  _VITE_FIREBASE_API_KEY: ''
+  _VITE_FIREBASE_AUTH_DOMAIN: ''
+  _VITE_FIREBASE_PROJECT_ID: ''
+  _SERVICE_NAME: 'YOUR_SERVICE_NAME'  # TODO: replace with your Cloud Run service name
+  _REGION: 'us-central1'  # TODO: replace with your preferred GCP region
+
+options:
+  logging: CLOUD_LOGGING_ONLY

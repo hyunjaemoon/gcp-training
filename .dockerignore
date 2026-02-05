@@ -1,0 +1,37 @@
+# Version control
+.git
+.gitignore
+
+# Python virtual env & caches
+__pycache__
+*.py[codz]
+venv/
+.venv/
+*.egg-info/
+
+# Node — rebuilt inside the Docker build
+ui/node_modules
+ui/dist
+
+# IDE / editor
+.vscode/
+.idea/
+.cursor/
+.cursorignore
+.cursorindexingignore
+
+# Environment files (secrets must come from Cloud Run env vars / Secret Manager)
+.env
+.env.*
+ui/.env
+
+# Documentation & local scripts
+README.md
+ui/README.md
+LICENSE
+dev.sh
+run.sh
+
+# Docker meta (no need to send to itself)
+Dockerfile
+.dockerignore
