@@ -1,5 +1,7 @@
 # gcp-training
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 GCP Training Session
 
 ## Goal
@@ -259,3 +261,7 @@ Deploy the containerized app to Google Kubernetes Engine (GKE) to run a scalable
 ## Author
 
 **Hyun Jae Moon** — [calhyunjaemoon@gmail.com](mailto:calhyunjaemoon@gmail.com)
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
