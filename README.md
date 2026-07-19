@@ -260,7 +260,7 @@ Deploy the containerized app to Google Kubernetes Engine (GKE) to run a scalable
 
 ## Author
 
-**Hyun Jae Moon** — [calhyunjaemoon@gmail.com](mailto:calhyunjaemoon@gmail.com)
+**Hyun Jae Moon** — [hyunjae@moonai.co.kr](mailto:hyunjae@moonai.co.kr)
 
 ## License
 
